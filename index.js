@@ -37,10 +37,34 @@ class MyArray {
 
 }
 
-let newArray = new MyArray();
-newArray.push("Hello")
-newArray.push("my")
-newArray.push("World")
-newArray.push("!")
-newArray.deleteAtIndex(1)
-console.log(newArray)
+//Merge sorted array
+//Example: [0, 3, 4, 31] [4, 6, 30] =>
+//[0, 3, 4, 4, 6, 30, 31]
+
+let arr1 = [0, 3, 4, 31]
+let arr2 = [0, 6, 30, 23, 78, 2]
+
+function mergeSortedArray(arr1, arr2) {
+  //Compare the items from start,put the lower one into the result array, and then loop to the next one, ends at the max length of the two arrays
+  let megedArray = [];
+  let arr1Item = arr1[0];
+  let arr2Item = arr2[0];
+  let i = 1;
+  let j = 1;
+
+  while ( arr1Item !== undefined  || arr2Item !== undefined ) {
+    console.log(arr1Item, arr2Item)
+    if (arr2Item === undefined || arr1Item < arr2Item) {
+      megedArray.push(arr1Item);
+      arr1Item = arr1[i];
+      i++;
+    } else {
+      megedArray.push(arr2Item);
+      arr2Item = arr2[j];
+      j++;
+    }
+  }
+  return megedArray;
+}
+
+console.log(mergeSortedArray(arr1, arr2))
