@@ -67,4 +67,12 @@ function mergeSortedArray(arr1, arr2) {
   return megedArray;
 }
 
-console.log(mergeSortedArray(arr1, arr2))
+function maxSumOfSubarray(nums) {
+  let maxSum = arr[0];
+  let sum = arr[0];
+  for (let i = 1; i < arr.length; i++) {
+    sum < 0 ? sum = arr[i] : sum += arr[i];
+    maxSum = Math.max(maxSum, sum);
+  }
+  return maxSum;
+}
