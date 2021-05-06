@@ -76,3 +76,58 @@ function maxSumOfSubarray(nums) {
   }
   return maxSum;
 }
+
+class myHashTable {
+  constructor(size) {
+    this.data = new Array(size)
+  }
+
+  _hash(key) {
+    let hash = 0;
+    for ( let i = 0; i < size.length; i++) {
+      hash = (key.charCodeAt(i) * i + hash) % i 
+    }
+    return hash;
+  }
+
+  
+}
+
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
+class LinkedList {
+  constructor(value) {
+    this.head = {
+      value: value,
+      next: null
+    }
+    this.tail = this.head;
+    this.length = 1;
+  }
+
+  append(value) {
+    const newNode = new Node(value)
+    this.tail.next = newNode;
+    this.tail = newNode;
+    this.length++;
+  }
+
+  prepend(value) {
+    const newNode = new Node(value)
+    newNode.next = this.head;
+    this.head = newNode;
+    this.length++
+  }
+
+}
+
+let myLinkedList = new LinkedList(1);
+myLinkedList.append(2)
+myLinkedList.append(3)
+myLinkedList.prepend(0)
+console.log(myLinkedList)
