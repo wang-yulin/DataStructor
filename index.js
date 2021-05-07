@@ -124,10 +124,59 @@ class LinkedList {
     this.length++
   }
 
+  printList() {
+    const valueArray = [];
+    let currentNode = this.head;
+    while(currentNode !== null) {
+      valueArray.push(currentNode.value);
+      currentNode = currentNode.next;
+    }
+    return valueArray
+  }
+
+  insert(index, value) {
+    if(index >= this.length) {
+      return this.append(value);
+    }
+
+    if(index === 0) {
+      return this.prepend(value);
+    } 
+
+    const leader = this.traverseToIndex(index-1)
+    const newNode = new Node(value);
+    newNode.next = leader.next;
+    leader.next = newNode;
+    this.length++;
+  }
+
+  traverseToIndex(index) {
+    let currentIndex = 0;
+    let currentNode = this.head;
+    while(currentIndex !== index) {
+    currentIndex++;
+    currentNode = currentNode.next;
+    }
+    return currentNode;
+  }
+
+  remove(index) {
+    if(index === 0) {
+      this.head = this.head.next;
+      this.length--;
+      return;
+    }
+    let leader = this.traverseToIndex(index-1);
+    const holdingPointer = leader.next.next;
+    leader.next = holdingPointer;
+    this.length--;
+  }
 }
 
 let myLinkedList = new LinkedList(1);
 myLinkedList.append(2)
 myLinkedList.append(3)
 myLinkedList.prepend(0)
-console.log(myLinkedList)
+myLinkedList.insert(2, 'a')
+myLinkedList.remove(0)
+myLinkedList.printList()
