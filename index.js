@@ -97,14 +97,16 @@ class Node {
   constructor(value) {
     this.value = value;
     this.next = null;
+    this.prev = null;
   }
 }
 
-class LinkedList {
+class DoublyLinkedList {
   constructor(value) {
     this.head = {
       value: value,
-      next: null
+      next: null,
+      prev: null
     }
     this.tail = this.head;
     this.length = 1;
@@ -112,14 +114,16 @@ class LinkedList {
 
   append(value) {
     const newNode = new Node(value)
+    newNode.prev = this.tail;
     this.tail.next = newNode;
     this.tail = newNode;
     this.length++;
   }
 
   prepend(value) {
-    const newNode = new Node(value)
+    const newNode = new Node(value);
     newNode.next = this.head;
+    this.head.prev = newNode;
     this.head = newNode;
     this.length++
   }
@@ -143,10 +147,13 @@ class LinkedList {
       return this.prepend(value);
     } 
 
-    const leader = this.traverseToIndex(index-1)
+    const leader = this.traverseToIndex(index-1);
+    const follower = leader.next;
     const newNode = new Node(value);
-    newNode.next = leader.next;
     leader.next = newNode;
+    newNode.prev = leader;
+    follower.prev = newNode;
+    newNode.next = follower;
     this.length++;
   }
 
@@ -163,20 +170,22 @@ class LinkedList {
   remove(index) {
     if(index === 0) {
       this.head = this.head.next;
+      this.head.prev = null;
       this.length--;
       return;
     }
-    let leader = this.traverseToIndex(index-1);
-    const holdingPointer = leader.next.next;
-    leader.next = holdingPointer;
+    const leader = this.traverseToIndex(index-1);
+    const follower = leader.next.next;
+    leader.next = follower;
+    follower.prev = leader;
     this.length--;
   }
 }
 
-let myLinkedList = new LinkedList(1);
+let myLinkedList = new DoublyLinkedList(1);
 myLinkedList.append(2)
 myLinkedList.append(3)
 myLinkedList.prepend(0)
 myLinkedList.insert(2, 'a')
-myLinkedList.remove(0)
+myLinkedList.remove(1)
 myLinkedList.printList()
