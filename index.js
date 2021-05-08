@@ -97,16 +97,14 @@ class Node {
   constructor(value) {
     this.value = value;
     this.next = null;
-    this.prev = null;
   }
 }
 
-class DoublyLinkedList {
+class LinkedList {
   constructor(value) {
     this.head = {
       value: value,
-      next: null,
-      prev: null
+      next: null
     }
     this.tail = this.head;
     this.length = 1;
@@ -114,7 +112,6 @@ class DoublyLinkedList {
 
   append(value) {
     const newNode = new Node(value)
-    newNode.prev = this.tail;
     this.tail.next = newNode;
     this.tail = newNode;
     this.length++;
@@ -123,7 +120,6 @@ class DoublyLinkedList {
   prepend(value) {
     const newNode = new Node(value);
     newNode.next = this.head;
-    this.head.prev = newNode;
     this.head = newNode;
     this.length++
   }
@@ -148,12 +144,9 @@ class DoublyLinkedList {
     } 
 
     const leader = this.traverseToIndex(index-1);
-    const follower = leader.next;
     const newNode = new Node(value);
+    newNode.next = leader.next;
     leader.next = newNode;
-    newNode.prev = leader;
-    follower.prev = newNode;
-    newNode.next = follower;
     this.length++;
   }
 
@@ -170,22 +163,40 @@ class DoublyLinkedList {
   remove(index) {
     if(index === 0) {
       this.head = this.head.next;
-      this.head.prev = null;
       this.length--;
       return;
     }
     const leader = this.traverseToIndex(index-1);
-    const follower = leader.next.next;
-    leader.next = follower;
-    follower.prev = leader;
+    const pointer = leader.next.next;
+    leader.next = pointer;
     this.length--;
+  }
+
+  reverse() {
+    if (!this.head.next) {
+      return this.head;
+    }
+
+    let first = this.head;
+    let second = first.next;
+    while (second) {
+      let temp = second.next;
+      second.next = first;
+      first = second;
+      second = temp;
+    }
+
+    this.head.next = null;
+    this.tail = this.head;
+    this.head = first;
+    return this
   }
 }
 
-let myLinkedList = new DoublyLinkedList(1);
+let myLinkedList = new LinkedList(1);
 myLinkedList.append(2)
 myLinkedList.append(3)
 myLinkedList.prepend(0)
 myLinkedList.insert(2, 'a')
-myLinkedList.remove(1)
-myLinkedList.printList()
+myLinkedList.reverse()
+// myLinkedList.printList()
