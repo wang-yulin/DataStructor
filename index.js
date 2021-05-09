@@ -193,10 +193,50 @@ class LinkedList {
   }
 }
 
-let myLinkedList = new LinkedList(1);
-myLinkedList.append(2)
-myLinkedList.append(3)
-myLinkedList.prepend(0)
-myLinkedList.insert(2, 'a')
-myLinkedList.reverse()
-// myLinkedList.printList()
+// let myLinkedList = new LinkedList(1);
+// myLinkedList.append(2)
+// myLinkedList.append(3)
+// myLinkedList.prepend(0)
+// myLinkedList.insert(2, 'a')
+// myLinkedList.reverse()
+// // myLinkedList.printList()
+
+class Stack {
+  constructor() {
+    this.top = null;
+    this.bottom = null;
+    this.length = 0
+  }
+
+  peek() {
+    return this.top;
+  }
+
+  push(value) {
+    const newNode = new Node(value);
+    if (!this.bottom) {
+      this.bottom = newNode;
+      this.top = newNode;
+    } else {
+      const holdingPointer = this.top;
+      this.top = newNode;
+      this.top.next = holdingPointer;
+    }
+    this.length++;
+  }
+
+  pop() {
+    if(this.top === this.bottom) {
+      this.bottom = null;
+    }
+    this.top = this.top.next;
+    this.length--;
+  }
+}
+
+let myStack = new Stack();
+myStack.push(0);
+myStack.push(1);
+myStack.push(2);
+myStack.pop();
+console.log(myStack)
