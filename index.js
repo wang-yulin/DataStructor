@@ -234,9 +234,206 @@ class Stack {
   }
 }
 
-let myStack = new Stack();
-myStack.push(0);
-myStack.push(1);
-myStack.push(2);
-myStack.pop();
-console.log(myStack)
+// let myStack = new Stack();
+// myStack.push(0);
+// myStack.push(1);
+// myStack.push(2);
+// myStack.pop();
+// console.log(myStack)
+
+class Queue {
+  constructor() {
+    this.first = null;
+    this.last = null;
+    this.length = 0;
+  }
+
+  peek() {
+    return this.first;
+  }
+
+  enqueue(value) {
+    const newNode = new Node(value);
+    if(!this.first) {
+      this.first = newNode;
+      this.last = newNode;
+    } else {
+      this.last.next = newNode;
+      this.last = newNode;
+    }
+    this.length++;
+  }
+
+  dequeue() {
+    if(this.first === this.last) {
+      this.last = null;
+    }
+    this.first = this.first.next;
+    this.length--;
+  }
+}
+
+// const myQueue = new Queue();
+// myQueue.enqueue(0);
+// myQueue.enqueue(1);
+// myQueue.enqueue(2);
+// myQueue.dequeue()
+// console.log(myQueue)
+
+class TreeNode {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null
+  }
+}
+
+class BSTree {
+  constructor() {
+    this.root = null;
+  }
+
+  insert(value) {
+    const newNode = new TreeNode(value);
+    if(!this.root) {
+      this.root = newNode;
+    } else {
+      let currentNode = this.root;
+      while(true) {
+        if(value < currentNode.value) {
+          if(!currentNode.left) {
+            currentNode.left = newNode;
+            break;
+          }
+          currentNode = currentNode.left;
+        } else {
+          if(!currentNode.right) {
+            currentNode.right = newNode;
+            break;
+          }
+          currentNode = currentNode.right;
+        }
+      }
+    }
+  }
+
+  lookup(value) {
+    if(!this.root) {
+      return false;
+    }
+    let currentNode = this.root;
+    while(currentNode) {
+      if(value < currentNode.value) {
+        currentNode = currentNode.left;
+      } else if(value > currentNode.value) {
+        currentNode = currentNode.right;
+      } else {
+        return currentNode;
+      }
+    }
+    return false;
+  }
+
+  remove(value) {
+    let deleteNode = this.lookup(value);
+    if(!deleteNode) {
+      return false;
+    }
+    //remove the node that has no children
+    if(!deleteNode.left && !deleteNode.right) {
+      let currentNode = this.root;
+      while(true) {
+        if(value < currentNode.value) {//left
+          if(currentNode.left === deleteNode) {
+            currentNode.left = null;
+            break;
+          }
+          currentNode = currentNode.left;
+        } else if(value > currentNode.value) {//right
+          if(currentNode.right === deleteNode) {
+            currentNode.right = null;
+            break;
+          }
+          currentNode = currentNode.right;
+        } 
+      }
+    }
+    //remove the node that has one child
+    if(!deleteNode.left && deleteNode.right
+      || deleteNode.left && !deleteNode.right) {
+      let currentNode = this.root;
+      while(true) {
+        if(value < currentNode.value) {
+          if(currentNode.left === deleteNode) {
+            currentNode.left = deleteNode.right || deleteNode.left;
+            break;
+          }
+          currentNode = currentNode.left;
+        } else if(value > currentNode.value) {
+          if(currentNode.right === deleteNode) {
+            currentNode.right = deleteNode.right || deleteNode.left;
+            break;
+          }
+          currentNode = currentNode.right;
+        }
+      }
+    } 
+    //remove the node that has two children
+    if(deleteNode.left && deleteNode.right) {
+      let currentNode = this.root;
+      while(true) {
+        if(value < currentNode.value) {//left
+          if(currentNode.left === deleteNode) {
+            let replaceNode = deleteNode.left;
+            let replaceParentNode = deleteNode;
+            while(replaceNode.left) {
+              replaceParentNode = replaceNode;
+              replaceNode = replaceNode.left;
+            }
+            currentNode.left = replaceNode;
+            replaceParentNode.left = replaceNode.right;
+            replaceNode.left = deleteNode.left;
+            replaceNode.right = deleteNode.right;
+            break;
+          }
+          currentNode = currentNode.left;
+        } else if (value > currentNode.value) {//right
+          if(currentNode.right === deleteNode) {
+            let replaceNode = deleteNode.left;
+            let replaceParentNode = deleteNode;
+            while(replaceNode.left) {
+              replaceParentNode = replaceNode;
+              replaceNode = replaceNode.left;
+            }
+            currentNode.right = replaceNode;
+            replaceParentNode.left = replaceNode.right;
+            replaceNode.left = deleteNode.left;
+            replaceNode.right = deleteNode.right;
+            replaceParentNode.left = null;
+            break;
+          }
+          currentNode = currentNode.right;
+        }
+      }
+    }
+  }
+}
+
+const myBSTree = new BSTree();
+myBSTree.insert(9)
+myBSTree.insert(4)
+myBSTree.insert(6)
+myBSTree.insert(20)
+myBSTree.insert(170)
+myBSTree.insert(15)
+myBSTree.insert(1)
+myBSTree.insert(16)
+myBSTree.remove(20)
+JSON.stringify(traverse(myBSTree.root))
+
+function traverse(node) {
+  const tree = {value: node.value}
+  tree.left = node.left === null ? null : traverse(node.left);
+  tree.right = node.right === null ? null : traverse(node.right);
+  return tree;
+}
