@@ -339,6 +339,7 @@ class BSTree {
     if(!deleteNode) {
       return false;
     }
+    //How about the root node?
     //remove the node that has no children
     if(!deleteNode.left && !deleteNode.right) {
       let currentNode = this.root;
@@ -419,17 +420,20 @@ class BSTree {
   }
 }
 
-const myBSTree = new BSTree();
-myBSTree.insert(9)
-myBSTree.insert(4)
-myBSTree.insert(6)
-myBSTree.insert(20)
-myBSTree.insert(170)
-myBSTree.insert(15)
-myBSTree.insert(1)
-myBSTree.insert(16)
-myBSTree.remove(20)
-JSON.stringify(traverse(myBSTree.root))
+// const myBSTree = new BSTree();
+// myBSTree.insert(9)
+// myBSTree.insert(4)
+// myBSTree.insert(6)
+// myBSTree.insert(20)
+// myBSTree.insert(170)
+// myBSTree.insert(15)
+// myBSTree.insert(2)
+// myBSTree.insert(16)
+// myBSTree.insert(14)
+// myBSTree.insert(1)
+// myBSTree.insert(3)
+// myBSTree.remove(4)
+// JSON.stringify(traverse(myBSTree.root))
 
 function traverse(node) {
   const tree = {value: node.value}
@@ -437,3 +441,23 @@ function traverse(node) {
   tree.right = node.right === null ? null : traverse(node.right);
   return tree;
 }
+
+function bubbleSort(arr) {
+  let length = arr.length;
+  if (length < 2) {
+    return arr;
+  }
+  for (let i = 0; i < length; i++) {
+    for(let j = 0; j < length - 1; j++) {
+      if(arr[j] > arr[j+1]) {
+        let temp = arr[j];
+        arr[j] = arr[j+1];
+        arr[j+1] = temp;
+      } 
+    }
+  }
+  return arr;
+}
+
+let arr = [9, 0, -1];
+console.log(bubbleSort(arr))
