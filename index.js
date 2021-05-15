@@ -456,8 +456,21 @@ function bubbleSort(arr) {
       } 
     }
   }
-  return arr;
 }
 
-let arr = [9, 0, -1];
-console.log(bubbleSort(arr))
+function selectionSort(arr) {
+  const length = arr.length;
+  for(let i = 0; i < length; i++) {
+    let temp = arr[i];
+    for(let j = i + 1; j < length; j++) {
+      if(arr[j] < arr[i]) {
+        arr[i] = arr[j];
+        arr[j] = temp;
+      }
+    }
+  }
+}
+
+const arr = [9,0]
+selectionSort(arr)
+console.log(arr)
