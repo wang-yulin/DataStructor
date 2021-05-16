@@ -443,12 +443,9 @@ function traverse(node) {
 }
 
 function bubbleSort(arr) {
-  let length = arr.length;
-  if (length < 2) {
-    return arr;
-  }
+  const length = arr.length;
   for (let i = 0; i < length; i++) {
-    for(let j = 0; j < length - 1; j++) {
+    for(let j = 0; j < length; j++) {
       if(arr[j] > arr[j+1]) {
         let temp = arr[j];
         arr[j] = arr[j+1];
@@ -471,6 +468,22 @@ function selectionSort(arr) {
   }
 }
 
-const arr = [9,0]
-selectionSort(arr)
-console.log(arr)
+function insertionSort(arr) {
+  const length = arr.length;
+  for(let i = 0; i < length; i++) {
+    if(arr[i] < arr[0]) {
+      arr.unshift(arr.splice(i,1)[0]);
+    } else {
+      if(arr[i] < arr[i-1]) {
+        for(let j = 1; j < i; j++) {
+          if(arr[i] >= arr[j-1] && arr[i] < arr[j]) {
+            arr.splice(j, 0, arr.splice(i, 1)[0])
+          }
+        }
+      }
+    }
+  }
+}
+const numbers = [99, 44, 6, 2, 1, 5, 63, 87, 283, 4, 0];
+insertionSort(numbers);
+console.log(numbers);
