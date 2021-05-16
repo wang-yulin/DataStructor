@@ -484,6 +484,34 @@ function insertionSort(arr) {
     }
   }
 }
-const numbers = [99, 44, 6, 2, 1, 5, 63, 87, 283, 4, 0];
-insertionSort(numbers);
-console.log(numbers);
+
+function mergeSort(array) {
+  const length = array.length;
+  if (length === 1) {
+    return array;
+  }
+
+  const mid = Math.floor(length/2);
+  const leftArray = array.slice(0, mid);
+  const rightArray = array.slice(mid,);
+  return merge(mergeSort(leftArray), mergeSort(rightArray));
+}
+
+function merge(left, right) {
+  const sortedArray = [];
+  let i = 0;
+  let j = 0;
+  while(i < left.length && j < right.length) {
+    if(left[i] < right[j]) {
+      sortedArray.push(left[i]);
+      i++;
+    } else {
+      sortedArray.push(right[j]);
+      j++;
+    }
+  }
+  return sortedArray.concat(left.slice(i)).concat(right.slice(j));
+}
+
+const numbers = [99, 44, 6, 2];
+console.log(mergeSort(numbers));
