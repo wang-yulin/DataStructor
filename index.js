@@ -418,22 +418,106 @@ class BSTree {
       }
     }
   }
+
+  breadthSearch() {
+    let currentNode = this.root;
+    let list = [];
+    let queue = [];
+    queue.push(currentNode);
+
+    while(queue.length) {
+      currentNode = queue.shift();
+      list.push(currentNode.value);
+      if (currentNode.left) {
+        queue.push(currentNode.left);
+      }
+      if (currentNode.right) {
+        queue.push(currentNode.right);
+      }
+    }
+    return list;
+  }
+
+  breadthSearchR(queue, list) {
+    if (!queue.length) {
+      return list;
+    }
+
+    let currentNode = queue.shift();
+    list.push(currentNode.value);
+    if(currentNode.left) {
+      queue.push(currentNode.left);
+    }
+    if(currentNode.right) {
+      queue.push(currentNode.right);
+    }
+    return this.breadthSearchR(queue, list)
+  }
+
+  DFSInorder() {
+    return traverseInorder(this.root, []);
+  }
+
+  DFSPreorder() {
+    return traversePreorder(this.root, []);
+  }
+
+  DFSPostorder() {
+    return traversePostorder(this.root, []);
+  }
 }
 
-// const myBSTree = new BSTree();
-// myBSTree.insert(9)
-// myBSTree.insert(4)
-// myBSTree.insert(6)
-// myBSTree.insert(20)
-// myBSTree.insert(170)
-// myBSTree.insert(15)
-// myBSTree.insert(2)
-// myBSTree.insert(16)
-// myBSTree.insert(14)
-// myBSTree.insert(1)
-// myBSTree.insert(3)
-// myBSTree.remove(4)
+function traversePostorder(node, list) {
+  if(node.left) {
+    traversePostorder(node.left, list);
+  }
+  if(node.right) {
+    traversePostorder(node.right, list);
+  }
+  list.push(node.value);
+  return list;
+}
+
+function traversePreorder(node, list) {
+  list.push(node.value);
+  if(node.left) {
+    traversePreorder(node.left, list);
+  }
+  if(node.right) {
+    traversePreorder(node.right, list);
+  }
+  return list;
+}
+
+function traverseInorder(node, list) {
+  if(node.left) {
+    traverseInorder(node.left, list);
+  }
+  list.push(node.value)
+  if(node.right) {
+    traverseInorder(node.right, list);
+  }
+  return list;
+}
+
+const myBSTree = new BSTree();
+myBSTree.insert(9)
+myBSTree.insert(4)
+myBSTree.insert(6)
+myBSTree.insert(20)
+myBSTree.insert(170)
+myBSTree.insert(15)
+myBSTree.insert(2)
+myBSTree.insert(16)
+myBSTree.insert(14)
+myBSTree.insert(1)
+myBSTree.insert(3)
+// myBSTree.breadthSearch();
+// myBSTree.breadthSearchR([myBSTree.root], [])
 // JSON.stringify(traverse(myBSTree.root))
+myBSTree.DFSInorder()
+myBSTree.DFSPreorder()
+myBSTree.DFSPostorder()
 
 function traverse(node) {
   const tree = {value: node.value}
@@ -513,5 +597,5 @@ function merge(left, right) {
   return sortedArray.concat(left.slice(i)).concat(right.slice(j));
 }
 
-const numbers = [99, 44, 6, 2];
-console.log(mergeSort(numbers));
+// const numbers = [99, 44, 6, 2];
+// console.log(mergeSort(numbers));
