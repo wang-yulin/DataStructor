@@ -335,89 +335,84 @@ class BSTree {
   }
 
   remove(value) {
-    let deleteNode = this.lookup(value);
-    if(!deleteNode) {
-      return false;
-    }
-    //How about the root node?
-    //remove the node that has no children
-    if(!deleteNode.left && !deleteNode.right) {
-      let currentNode = this.root;
-      while(true) {
-        if(value < currentNode.value) {//left
-          if(currentNode.left === deleteNode) {
-            currentNode.left = null;
-            break;
-          }
-          currentNode = currentNode.left;
-        } else if(value > currentNode.value) {//right
-          if(currentNode.right === deleteNode) {
-            currentNode.right = null;
-            break;
-          }
-          currentNode = currentNode.right;
-        } 
-      }
-    }
-    //remove the node that has one child
-    if(!deleteNode.left && deleteNode.right
-      || deleteNode.left && !deleteNode.right) {
-      let currentNode = this.root;
-      while(true) {
-        if(value < currentNode.value) {
-          if(currentNode.left === deleteNode) {
-            currentNode.left = deleteNode.right || deleteNode.left;
-            break;
-          }
-          currentNode = currentNode.left;
-        } else if(value > currentNode.value) {
-          if(currentNode.right === deleteNode) {
-            currentNode.right = deleteNode.right || deleteNode.left;
-            break;
-          }
-          currentNode = currentNode.right;
-        }
-      }
-    } 
-    //remove the node that has two children
-    if(deleteNode.left && deleteNode.right) {
-      let currentNode = this.root;
-      while(true) {
-        if(value < currentNode.value) {//left
-          if(currentNode.left === deleteNode) {
-            let replaceNode = deleteNode.left;
-            let replaceParentNode = deleteNode;
-            while(replaceNode.left) {
-              replaceParentNode = replaceNode;
-              replaceNode = replaceNode.left;
-            }
-            currentNode.left = replaceNode;
-            replaceParentNode.left = replaceNode.right;
-            replaceNode.left = deleteNode.left;
-            replaceNode.right = deleteNode.right;
-            break;
-          }
-          currentNode = currentNode.left;
-        } else if (value > currentNode.value) {//right
-          if(currentNode.right === deleteNode) {
-            let replaceNode = deleteNode.left;
-            let replaceParentNode = deleteNode;
-            while(replaceNode.left) {
-              replaceParentNode = replaceNode;
-              replaceNode = replaceNode.left;
-            }
-            currentNode.right = replaceNode;
-            replaceParentNode.left = replaceNode.right;
-            replaceNode.left = deleteNode.left;
-            replaceNode.right = deleteNode.right;
-            replaceParentNode.left = null;
-            break;
-          }
-          currentNode = currentNode.right;
-        }
-      }
-    }
-  }
+		if (!this.root) {
+			return false;
+		} else {
+			this.root = deleteNode(this.root, value);
+		}
+	}
+}
+
+function findMinNodeValue(node) {
+	let currentNode = node;
+	while (currentNode.left) {
+		currentNode = currentNode.left;
+	}
+	return currentNode.value;
+}
+
+function deleteNode(root, value) {
+	let currentNode = root;
+	let parentNode = null;
+	while (currentNode) {
+		if (value < currentNode.value) {
+			parentNode = currentNode;
+			currentNode = currentNode.left;
+		} else if (value > currentNode.value) {
+			parentNode = currentNode;
+			currentNode = currentNode.right;
+		} else if (value === currentNode.value) {
+			//Case 1: Leaf Node
+			if (currentNode.left === null &&
+				currentNode.right === null) {
+				if (value === root.value) {
+					root = null;
+					return root;
+				} else {
+					if (value < parentNode.value) {
+						parentNode.left = null;
+						return root;
+					} else {
+						parentNode.right = null;
+						return root;
+					}	
+				}
+			//Case 2: Node has two children
+			} else if (currentNode.left && 
+					   currentNode.right) {
+				let replaceValue = findMinNodeValue(currentNode.right);
+				if (value === root.value) {
+					root.value = replaceValue;
+				} else {
+					if (value < parentNode.value) {
+						parentNode.left.value = replaceValue;
+					} else {
+						parentNode.right.value = replaceValue;
+					}
+				}
+				currentNode.right = deleteNode(currentNode.right, replaceValue);
+				return root;
+			//Case 3: Node has one child
+			} else {
+				if (value === root.value) {
+					root = currentNode.left ? 
+					currentNode.left : currentNode.right;
+					return root;
+				} else {
+					if (value < parentNode.value) {
+						parentNode.left = currentNode.left ? 
+						currentNode.left : currentNode.right;
+						return root;
+					} else {
+						parentNode.right = currentNode.left ? 
+						currentNode.left : currentNode.right;
+						return root;
+					}
+				}
+			}
+		}
+	}
+}
 
   breadthSearch() {
     let currentNode = this.root;
@@ -515,9 +510,9 @@ myBSTree.insert(3)
 // myBSTree.breadthSearch();
 // myBSTree.breadthSearchR([myBSTree.root], [])
 // JSON.stringify(traverse(myBSTree.root))
-myBSTree.DFSInorder()
-myBSTree.DFSPreorder()
-myBSTree.DFSPostorder()
+// myBSTree.DFSInorder()
+// myBSTree.DFSPreorder()
+// myBSTree.DFSPostorder()
 
 function traverse(node) {
   const tree = {value: node.value}
@@ -599,3 +594,7 @@ function merge(left, right) {
 
 // const numbers = [99, 44, 6, 2];
 // console.log(mergeSort(numbers));
+function quickSort(array) {
+  
+}
+
